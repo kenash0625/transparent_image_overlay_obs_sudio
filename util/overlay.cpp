@@ -181,7 +181,7 @@ bool overlay::load()
 
 void overlay::unload()
 {
-    unload_texture();
+    //unload_texture();
     m_settings->cx = 100;
     m_settings->cy = 100;
 }
@@ -201,7 +201,7 @@ bool overlay::load_texture()
     else {
         ;// return true;
     }
-    pos += 1;
+    pos += 20;
     if (pos > 1000)pos = 40;
     QImage pxMap(1920, 1080, QImage::Format_ARGB32_Premultiplied);
     QPainter p;
@@ -221,10 +221,11 @@ bool overlay::load_texture()
 	p.drawLine(pos, 400-30, pos, 400+30);
 
     p.end();
-    gs_image_file_init_test1(m_image,(char*) &pxMap);// "d:/test.png");// m_settings->image_file.c_str());
+   
 
-    obs_enter_graphics();
-    gs_image_file_init_texture(m_image);
+    obs_enter_graphics(); gs_image_file_free_test1(m_image);
+    gs_image_file_init_test1(m_image,(char*) &pxMap);// "d:/test.png");// m_settings->image_file.c_str());
+	gs_image_file_init_texture(m_image);
     obs_leave_graphics();
 
     if (!m_image->loaded) {

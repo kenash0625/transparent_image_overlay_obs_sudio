@@ -24,9 +24,11 @@
 //#include "../util/config.hpp"
 //#include "../network/io_server.hpp"
 //#include "../network/remote_connection.hpp"
+#include <QTimer>
 #include <QFile>
 #include <obs-frontend-api.h>
 sources::input_source* pInstance = nullptr;
+QTimer *timer = nullptr;
 namespace sources {
 bool overlay_settings::use_local_input()
 {
@@ -168,20 +170,32 @@ void register_overlay_source()
 
     /* Input Overlay */
     obs_source_info si = {};
-    si.id = "input-overlay";
+    si.id = "ltctest-overlay";
     si.type = OBS_SOURCE_TYPE_INPUT;
     si.output_flags = OBS_SOURCE_VIDEO;
     si.get_properties = get_properties_for_overlay;
     si.icon_type = OBS_ICON_TYPE_GAME_CAPTURE;
-    si.get_name = [](void *) { return obs_module_text("InputOverlay"); };
+    si.get_name = [](void *) { return obs_module_text("ltctestOverlay"); };
     si.create = [](obs_data_t *settings, obs_source_t *source) {
+        if (!timer)
+        {
+            timer = new QTimer;
+            timer->setSingleShot(false);
+            timer->setInterval(500);
+            QObject::connect(timer, &QTimer::timeout, load_input);
+            timer->start();
+        }
         if (pInstance) {
             pInstance->m_overlay->load(); 
             return static_cast<void*>(pInstance);
         }
         else return static_cast<void*>(new input_source(source, settings));
     };
-    si.destroy = [](void *data) { delete static_cast<input_source *>(data); };
+    si.destroy = [](void *data) { 
+        timer->stop();
+        delete static_cast<input_source *>(data);
+        delete timer;
+    };
     si.get_width = [](void *data) { return static_cast<input_source *>(data)->m_settings.cx; };
     si.get_height = [](void *data) { return static_cast<input_source *>(data)->m_settings.cy; };
     si.get_defaults = [](obs_data_t *settings) { UNUSED_PARAMETER(settings); };

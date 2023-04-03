@@ -4,7 +4,13 @@
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <QtLastBackgroundBuild>2021-12-09T07:15:45.2932788Z</QtLastBackgroundBuild>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="QtSettings">
+    <QtLastBackgroundBuild>2023-04-03T09:27:47.0432458Z</QtLastBackgroundBuild>
+  </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <QtLastBackgroundBuild>2021-12-09T07:15:44.8260969Z</QtLastBackgroundBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="QtSettings">
+    <QtLastBackgroundBuild>2023-04-03T09:27:47.1682167Z</QtLastBackgroundBuild>
   </PropertyGroup>
 </Project>
